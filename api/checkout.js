@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: 0, currency: 'usd' },
-            display_name: 'US Shipping',
+            display_name: 'US Addresses Only — Free Shipping',
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 3 },
               maximum: { unit: 'business_day', value: 7 },
@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: INTERNATIONAL_SHIPPING_COST, currency: 'usd' },
-            display_name: 'International Shipping',
+            display_name: 'International (Outside US) — $22.00',
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 7 },
               maximum: { unit: 'business_day', value: 21 },
