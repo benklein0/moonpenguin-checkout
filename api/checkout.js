@@ -7,6 +7,8 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const SUCCESS_URL = 'https://themoonpenguinshop.com/success.html';
 const CANCEL_URL = 'https://themoonpenguinshop.com/shop.html';
 
+const INTERNATIONAL_SHIPPING_COST = 2200; // $22.00 in cents
+
 module.exports = async (req, res) => {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', 'https://themoonpenguinshop.com');
@@ -38,7 +40,7 @@ module.exports = async (req, res) => {
             images: image ? [image] : [],
             description: 'Handmade by TheMoonPenguinShop — made by hand in Westport, CT'
           },
-          unit_amount: Math.round(price * 100), // convert to cents
+          unit_amount: Math.round(price * 100),
         },
         quantity: 1,
       }],
@@ -46,8 +48,32 @@ module.exports = async (req, res) => {
       success_url: `${SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: CANCEL_URL,
       shipping_address_collection: {
-        allowed_countries: ['US', 'CA', 'GB', 'AU', 'NZ', 'IE', 'FR', 'DE', 'IT', 'ES', 'NL', 'BE', 'CH', 'AT', 'SE', 'NO', 'DK', 'FI'],
+        allowed_countries: ['US', 'CA', 'GB', 'AU', 'NZ', 'IE', 'FR', 'DE', 'IT', 'ES', 'NL', 'BE', 'CH', 'AT', 'SE', 'NO', 'DK', 'FI', 'JP', 'KR', 'SG', 'HK', 'MX', 'BR', 'AR', 'CL', 'CO', 'IN', 'ZA', 'IL', 'AE', 'PT', 'GR', 'PL', 'CZ', 'HU', 'RO'],
       },
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: { amount: 0, currency: 'usd' },
+            display_name: 'US Shipping',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 3 },
+              maximum: { unit: 'business_day', value: 7 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: { amount: INTERNATIONAL_SHIPPING_COST, currency: 'usd' },
+            display_name: 'International Shipping',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 7 },
+              maximum: { unit: 'business_day', value: 21 },
+            },
+          },
+        },
+      ],
       phone_number_collection: { enabled: true },
       custom_fields: [{
         key: 'gift_message',
