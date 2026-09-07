@@ -86,6 +86,11 @@ module.exports = async (req, res) => {
       mode: 'payment',
       success_url: `${SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: CANCEL_URL,
+      // Lets customers type a promo code (e.g. from a QR insert card) at
+      // checkout. The codes themselves are created in the Stripe Dashboard
+      // under Product catalog > Coupons > Promotion codes -- no code change
+      // needed to add, change, or retire a code.
+      allow_promotion_codes: true,
       shipping_address_collection: {
         allowed_countries: ['US', 'CA', 'GB', 'AU', 'NZ', 'IE', 'FR', 'DE', 'IT', 'ES', 'NL', 'BE', 'CH', 'AT', 'SE', 'NO', 'DK', 'FI', 'JP', 'KR', 'SG', 'HK', 'MX', 'BR', 'AR', 'CL', 'CO', 'IN', 'ZA', 'IL', 'AE', 'PT', 'GR', 'PL', 'CZ', 'HU', 'RO'],
       },
